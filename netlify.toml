@@ -1,0 +1,29 @@
+[build]
+  command = """
+    pip install -r requirements.txt &&
+    mkdir -p .streamlit &&
+    echo '[server]' > .streamlit/config.toml &&
+    echo 'headless = true' >> .streamlit/config.toml &&
+    echo 'enableCORS = false' >> .streamlit/config.toml &&
+    echo 'enableXsrfProtection = false' >> .streamlit/config.toml
+  """
+  publish = "."
+  functions = "netlify/functions"
+
+[build.environment]
+  PYTHON_VERSION = "3.9"
+
+# Create a new file: netlify/functions/streamlit.js
+exports.handler = async function(event, context) {
+  try {
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: "Streamlit app is running" })
+    };
+  } catch (error) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: "Failed to start Streamlit app" })
+    };
+  }
+};
