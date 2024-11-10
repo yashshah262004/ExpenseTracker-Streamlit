@@ -1,4 +1,3 @@
-# database.py
 import os
 from datetime import datetime
 from pymongo import MongoClient
@@ -64,16 +63,3 @@ class Database:
         else:
             # Convert the date to datetime at midnight
             expense_date = datetime.combine(date, datetime.min.time())
-            
-        return self.db.expenses.update_one(
-            {'_id': expense_id, 'user_id': str(user_id)},
-            {
-                '$set': {
-                    'description': description,
-                    'amount': float(amount),
-                    'category': category,
-                    'date': expense_date,
-                    'updated_at': datetime.now()
-                }
-            }
-        )

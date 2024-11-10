@@ -1,23 +1,9 @@
 import streamlit as st
 from datetime import datetime
-from database import Database
+from database import Database  # Import the Database class from database.py
 from auth_handler import AuthHandler
-from bson import ObjectId
+from pymongo import MongoClient
 import os
-from pymongo import MongoClient 
-
-# Update database connection to handle Netlify environment
-def get_database_url():
-    if os.getenv('NETLIFY'):
-        return os.getenv('MONGO_URI')
-    return os.getenv('MONGO_URI_LOCAL', os.getenv('MONGO_URI'))
-
-# Update your Database class initialization
-class Database:
-    def __init__(self):
-        self.client = MongoClient(get_database_url())  # MongoClient needs to be imported
-        self.db = self.client.expense_tracker
-
 
 # Initialize database and auth handler
 db = Database()
@@ -110,6 +96,7 @@ def expense_tracker():
     # Expense list
     for expense in expenses:
         with st.expander(f"{expense['description']} - Rs.{expense['amount']:.2f}"):
+
             col1, col2, col3 = st.columns([2, 2, 1])
             
             with col1:
