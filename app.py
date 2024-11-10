@@ -1,11 +1,10 @@
-# app.py
 import streamlit as st
 from datetime import datetime
 from database import Database
 from auth_handler import AuthHandler
 from bson import ObjectId
-# Add at the top of app.py
 import os
+from pymongo import MongoClient 
 
 # Update database connection to handle Netlify environment
 def get_database_url():
@@ -16,7 +15,7 @@ def get_database_url():
 # Update your Database class initialization
 class Database:
     def __init__(self):
-        self.client = MongoClient(get_database_url())
+        self.client = MongoClient(get_database_url())  # MongoClient needs to be imported
         self.db = self.client.expense_tracker
 
 
