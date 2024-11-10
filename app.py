@@ -4,6 +4,21 @@ from datetime import datetime
 from database import Database
 from auth_handler import AuthHandler
 from bson import ObjectId
+# Add at the top of app.py
+import os
+
+# Update database connection to handle Netlify environment
+def get_database_url():
+    if os.getenv('NETLIFY'):
+        return os.getenv('MONGO_URI')
+    return os.getenv('MONGO_URI_LOCAL', os.getenv('MONGO_URI'))
+
+# Update your Database class initialization
+class Database:
+    def __init__(self):
+        self.client = MongoClient(get_database_url())
+        self.db = self.client.expense_tracker
+
 
 # Initialize database and auth handler
 db = Database()
@@ -82,7 +97,7 @@ def expense_tracker():
     # Summary statistics
     if expenses:
         total_expenses = sum(expense['amount'] for expense in expenses)
-        st.metric("Total Expenses", f"Rs.{total_expenses:.2f}")
+        st.metric("Total Expenses", f"$.{total_expenses:.2f}")
         
         # Category-wise breakdown
         st.subheader("Expenses by Category")
