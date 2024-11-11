@@ -82,7 +82,7 @@ def expense_tracker():
     # Summary statistics
     if expenses:
         total_expenses = sum(expense['amount'] for expense in expenses)
-        st.metric("Total Expenses", f"$.{total_expenses:.2f}")
+        st.metric("Total Expenses", f"Rs.{total_expenses:.2f}")
         
         # Category-wise breakdown
         st.subheader("Expenses by Category")
